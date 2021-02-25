@@ -84,6 +84,7 @@ function App() {
   const onRouteChange = (route) => {
     if (route === 'signout') {
       setIsSignedIn(false)
+      setUser({})
     } else if (route === 'home') {
       setIsSignedIn(true)
     }
