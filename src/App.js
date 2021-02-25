@@ -6,12 +6,7 @@ import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import SignIn from './components/SignIn/SignIn'
 import Register from './components/Register/Register'
-import Clarifai from 'clarifai';
 import './App.css';
- 
-const app = new Clarifai.App({
- apiKey: 'c69b1964a2ae498f97fba34a8c89646a'
-});
 
 function App() {
   const [ input, setInput ] = useState('')
@@ -61,25 +56,32 @@ function App() {
 
   const onSubmit = () => {
     setImageUrl(input)
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
-      .then(response => {
-        if (response) {
-          fetch('http://localhost:3000/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-            id: user.id
-            })
-          })
-            .then(response => response.json())
-            .then(count => {
-              setUser(Object.assign(user, {entries: count}))
-        })
-      }
-        displayFaceBox(calculateFaceLocation(response))
+    fetch('http://localhost:3000/imageurl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+      input: input
       })
-      .catch(err => console.log(err))
-}
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+          id: user.id
+          })
+        })
+          .then(response => response.json())
+          .then(count => {
+            setUser(Object.assign(user, {entries: count}))
+      })
+      .catch(console.log)
+      }
+    displayFaceBox(calculateFaceLocation(response))
+    })
+  }
 
   const onRouteChange = (route) => {
     if (route === 'signout') {
