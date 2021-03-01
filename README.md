@@ -1,3 +1,3 @@
 # Smart Brain
 
-http://discoverboldly.com/smart-brain/
+https://danielbednarz2.github.io/smart-brain/
