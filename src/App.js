@@ -54,8 +54,10 @@ function App() {
     setInput(e.target.value)
   }
 
+
   const onSubmit = () => {
     setImageUrl(input)
+    setInput('')
     fetch('https://stark-everglades-93601.herokuapp.com/imageurl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -100,7 +102,7 @@ function App() {
       ? <div>
           <Logo />
           <Rank name={user.name} entries={user.entries} />
-          <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
+          <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} onDetect={onDetect}/>
           <FaceRecognition imageUrl={imageUrl} box={box} />
         </div>
       : (
